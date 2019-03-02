@@ -5,7 +5,7 @@ from telnetlib import Telnet
 import pyodbc
 
 db_file = os.path.realpath(__file__)
-CONN_STRING = r'DRIVER=Driver do Microsoft Access (*.mdb);DBQ=c:\users\marwan abdelatti\desktop\py_telnet_db-master\test_1.mdb'
+CONN_STRING = r'DRIVER=Driver do Microsoft Access (*.mdb);DBQ=c:\users\marwan abdelatti\desktop\py_telnet_db-master\EKanBan_Bin_Database_REV5.mdb'
 
 def fetch_data():
         with Telnet('localhost', 9055, 10) as tn:
@@ -13,7 +13,8 @@ def fetch_data():
                 res = tn.read_until(b'AAAAAAAAAAAAAAAAAAAAAAAA', 5).splitlines()
 
         record = [record[:record.index(b'\t')].decode('utf-8') for record in res[1:]]
-        return record
+        # returning (set) avoids duplicated records:
+        return set(record)
 
 def connect_to_db(CONN_STRING):
         conn = pyodbc.connect(CONN_STRING)
@@ -23,13 +24,13 @@ def connect_to_db(CONN_STRING):
 
 def clear_db(cursor):
         # Clear ALL raw data before adding the new records        
-        cursor.execute('DELETE FROM raw_data')
+        cursor.execute('DELETE FROM reader_data')
         cursor.commit()
 
 def push_data(record_list, cursor):
 
         for record in record_list:
-                cursor.execute('''INSERT INTO raw_data (Tag_ID)
+                cursor.execute('''INSERT INTO reader_data (EPC)
                                 VALUES('%s')''' %record)
         cursor.commit()
 
