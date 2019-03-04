@@ -1,11 +1,14 @@
 import time
 import os
+import pathlib
 
 from telnetlib import Telnet
 import pyodbc
 
-db_file = os.path.realpath(__file__)
-CONN_STRING = r'DRIVER=Driver do Microsoft Access (*.mdb);DBQ=c:\users\marwan abdelatti\desktop\py_telnet_db-master\EKanBan_Bin_Database_REV5.mdb'
+db_file = pathlib.Path(os.path.realpath(__file__)).parents[0]
+db_file = db_file / 'EKanBan_Bin_Database_REV5.mdb'
+print(db_file)
+CONN_STRING = r'DRIVER=Driver do Microsoft Access (*.mdb);DBQ=%s'%db_file
 
 def fetch_data():
         with Telnet('localhost', 9055, 10) as tn:
