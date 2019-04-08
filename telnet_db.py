@@ -31,7 +31,6 @@ def clear_db(cursor):
         cursor.commit()
 
 def push_data(record_list, cursor):
-
         for record in record_list:
                 cursor.execute('''INSERT INTO reader_data (EPC)
                                 VALUES('%s')''' %record)
@@ -42,4 +41,4 @@ if __name__ == "__main__":
         while cursor:
                 clear_db(cursor)
                 push_data(fetch_data(), cursor)
-                time.sleep(10)
+                time.sleep(5)
