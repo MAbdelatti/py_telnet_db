@@ -41,4 +41,4 @@ if __name__ == "__main__":
         while cursor:
                 clear_db(cursor)
                 push_data(fetch_data(), cursor)
-                time.sleep(5)
+                time.sleep(1)
